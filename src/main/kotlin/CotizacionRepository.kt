@@ -60,7 +60,7 @@ class CotizacionRepository(){
 
     fun createFichFromMap(mapOfThings:Map<String, List<String>>){
         val fich = createFich()
-        val bw = Files.newBufferedWriter(fich.toPath(),StandardOpenOption.APPEND)
+        //val bw = Files.newBufferedWriter(fich.toPath(),StandardOpenOption.APPEND)
 
 
         val listOfNames = listOf<String>("Final","Maximo","Minimo","Volumen","Efectivo")
@@ -68,13 +68,18 @@ class CotizacionRepository(){
         val listOfColumns = mutableListOf<Float>()
         for (i in 0..4){
 
-
             mapOfThings.values.forEach{listOfNums ->
                 val replaced = listOfNums[i].replace(".","").replace(",",".")
                 listOfColumns.add(replaced.toFloat())
             }
 
+            fich.appendText("${listOfNames[i]}\n")
+            fich.appendText("Min: ${listOfColumns.min()}\n")
+            fich.appendText("Max: ${listOfColumns.max()}\n")
+            fich.appendText("Average: ${listOfColumns.average()}\n")
+            fich.appendText("\n")
 
+/*
             bw.use {
                 bw.append("${listOfNames[i]}\n")
                 bw.append("Min: ${listOfColumns.min()}\n")
@@ -83,7 +88,7 @@ class CotizacionRepository(){
                 bw.append("\n")
                 bw.flush()
             }
-
+*/
 
 /*
             bw.append("${listOfNames[i]}\n")
