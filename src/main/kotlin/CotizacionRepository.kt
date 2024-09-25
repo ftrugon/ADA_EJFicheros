@@ -7,14 +7,17 @@ import java.nio.file.StandardOpenOption
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.io.path.notExists
+import kotlin.text.replace
 
-class CotizacionRepository(){
+class CotizacionRepository(
+    val csvPath: Path
+){
 
 
-    fun csvToMap(rutaCsv: Path): Map<String, List<String>>{
+    fun csvToMap(): Map<String, List<String>>{
 
         val mapToReturn = mutableMapOf<String, List<String>>()
-        val br = Files.newBufferedReader(rutaCsv)
+        val br = Files.newBufferedReader(csvPath)
 
         br.use {flujo ->
             flujo.forEachLine { line ->
@@ -50,23 +53,24 @@ class CotizacionRepository(){
         if (!dateDir.exists()){
             dateDir.mkdir()
         }
-
-        file.createNewFile()
-
+        if (!file.exists()){
+            file.createNewFile()
+        }
         return file
-
     }
 
 
-    fun createFichFromMap(mapOfThings:Map<String, List<String>>){
+    fun createFichFromMapByColumn(mapOfThings:Map<String, List<String>>){
         val fich = createFich()
         //val bw = Files.newBufferedWriter(fich.toPath(),StandardOpenOption.APPEND)
 
-
-        val listOfNames = listOf<String>("Final","Maximo","Minimo","Volumen","Efectivo")
+        val br = Files.newBufferedReader(csvPath)
+        val listOfNames = br.readLine().split(";").toMutableList()
+        listOfNames.removeFirst()
+        br.close()
 
         val listOfColumns = mutableListOf<Float>()
-        for (i in 0..4){
+        for (i in 0..listOfNames.count()-1){
 
             mapOfThings.values.forEach{listOfNums ->
                 val replaced = listOfNums[i].replace(".","").replace(",",".")
@@ -88,21 +92,34 @@ class CotizacionRepository(){
                 bw.append("\n")
                 bw.flush()
             }
-*/
 
-/*
             bw.append("${listOfNames[i]}\n")
             bw.append("Min: ${listOfColumns.min()}\n")
             bw.append("Max: ${listOfColumns.max()}\n")
             bw.append("Average: ${listOfColumns.average()}\n")
             bw.append("\n")
 */
-
-
             listOfColumns.clear()
-
-
         }
 
     }
+
+    fun createFichFromMapByRow(mapOfThings:Map<String, List<String>>){
+        val fich = createFich()
+
+        val listOfNames = listOf<String>("Nombre","Min","Max","Promedio")
+
+        fich.appendText(listOfNames.toString())
+
+        mapOfThings.forEach{name, numbers ->
+            val formatedNumbers = mutableListOf<Float>()
+            numbers.forEach{ numString ->
+                val replaced = numString.replace(".","").replace(",",".")
+                formatedNumbers.add(replaced.toFloat())
+            }
+            fich.appendText("\n$name, min: ${formatedNumbers.min()},max: ${formatedNumbers.max()},avg: ${formatedNumbers.average()}")
+            formatedNumbers.clear()
+        }
+    }
+
 }

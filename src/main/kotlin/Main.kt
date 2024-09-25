@@ -23,12 +23,12 @@ Efectivo (capitalización al cierre en miles de euros).
 
 fun main() {
 
-    val CR = CotizacionRepository()
-
     val pathOfCsv = Path.of("C:\\Users\\fran\\IdeaProjects\\ADA_EJFicheros\\src\\main\\resources\\cotizacion.csv")
 
-    val mapOfEnterprises = CR.csvToMap(pathOfCsv)
+    val CR = CotizacionRepository(pathOfCsv)
 
-    CR.createFichFromMap(mapOfEnterprises)
+    val mapOfEnterprises = CR.csvToMap()
 
+//    CR.createFichFromMapByColumn(mapOfEnterprises)
+    CR.createFichFromMapByRow(mapOfEnterprises)
 }
