@@ -42,7 +42,7 @@ class CotizacionRepository(
         val Hora = LocalDateTime.now().format(formatoHora)
         val Fecha = LocalDateTime.now().format(formatoFecha)
         val fechaArchivo = LocalDateTime.now().format(formatoFecha)
-        val file = File("src/main/resources/MinMaxOfColumns/$fechaArchivo/MinMax_${Fecha}_${Hora}.txt")
+        val file = File("src/main/resources/MinMaxOfColumns/$fechaArchivo/MinMax_${Fecha}_${Hora}.csv")
 
         val direcDir = File("src/main/resources/MinMaxOfColumns")
         val dateDir = File("src/main/resources/MinMaxOfColumns/$fechaArchivo")
