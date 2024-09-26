@@ -29,6 +29,6 @@ fun main() {
 
     val mapOfEnterprises = CR.csvToMap()
 
-//    CR.createFichFromMapByColumn(mapOfEnterprises)
+    CR.createFichFromMapByColumn(mapOfEnterprises)
     CR.createFichFromMapByRow(mapOfEnterprises)
 }
