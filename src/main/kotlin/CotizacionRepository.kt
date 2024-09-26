@@ -1,5 +1,6 @@
 package org.example
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -71,6 +72,9 @@ class CotizacionRepository(
         val addToBw = mutableListOf<String>()
 
         val listOfColumns = mutableListOf<Float>()
+
+
+
         for (i in 0..listOfNames.count()-1){
 
             mapOfThings.values.forEach{listOfNums ->
@@ -128,7 +132,7 @@ class CotizacionRepository(
                 val replaced = numString.replace(".","").replace(",",".")
                 formatedNumbers.add(replaced.toFloat())
             }
-            addToBw.add("\n$name, min: ${formatedNumbers.min()},max: ${formatedNumbers.max()},avg: ${formatedNumbers.average()}")
+            addToBw.add("\n$name, min: ${formatedNumbers[2]},max: ${formatedNumbers[1]},avg: ${(formatedNumbers[1] + formatedNumbers[2])/2}")
             //fich.appendText("\n$name, min: ${formatedNumbers.min()},max: ${formatedNumbers.max()},avg: ${formatedNumbers.average()}")
             formatedNumbers.clear()
         }
