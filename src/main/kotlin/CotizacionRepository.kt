@@ -62,12 +62,13 @@ class CotizacionRepository(
 
     fun createFichFromMapByColumn(mapOfThings:Map<String, List<String>>){
         val fich = createFich()
-        //val bw = Files.newBufferedWriter(fich.toPath(),StandardOpenOption.APPEND)
 
         val br = Files.newBufferedReader(csvPath)
         val listOfNames = br.readLine().split(";").toMutableList()
         listOfNames.removeFirst()
         br.close()
+
+        val addToBw = mutableListOf<String>()
 
         val listOfColumns = mutableListOf<Float>()
         for (i in 0..listOfNames.count()-1){
@@ -77,13 +78,14 @@ class CotizacionRepository(
                 listOfColumns.add(replaced.toFloat())
             }
 
+            addToBw.add("${listOfNames[i]}\nMin: ${listOfColumns.min()}\nMax: ${listOfColumns.max()}\nAverage: ${listOfColumns.average()}\n\n")
+/*
             fich.appendText("${listOfNames[i]}\n")
             fich.appendText("Min: ${listOfColumns.min()}\n")
             fich.appendText("Max: ${listOfColumns.max()}\n")
             fich.appendText("Average: ${listOfColumns.average()}\n")
             fich.appendText("\n")
 
-/*
             bw.use {
                 bw.append("${listOfNames[i]}\n")
                 bw.append("Min: ${listOfColumns.min()}\n")
@@ -102,6 +104,13 @@ class CotizacionRepository(
             listOfColumns.clear()
         }
 
+        val bw = Files.newBufferedWriter(fich.toPath(),StandardOpenOption.APPEND)
+        bw.use {
+            addToBw.forEach {
+                bw.write(it)
+            }
+        }
+
     }
 
     fun createFichFromMapByRow(mapOfThings:Map<String, List<String>>){
@@ -111,15 +120,28 @@ class CotizacionRepository(
 
         fich.appendText(listOfNames.toString())
 
+        val addToBw = mutableListOf<String>()
+
         mapOfThings.forEach{name, numbers ->
             val formatedNumbers = mutableListOf<Float>()
             numbers.forEach{ numString ->
                 val replaced = numString.replace(".","").replace(",",".")
                 formatedNumbers.add(replaced.toFloat())
             }
-            fich.appendText("\n$name, min: ${formatedNumbers.min()},max: ${formatedNumbers.max()},avg: ${formatedNumbers.average()}")
+            addToBw.add("\n$name, min: ${formatedNumbers.min()},max: ${formatedNumbers.max()},avg: ${formatedNumbers.average()}")
+            //fich.appendText("\n$name, min: ${formatedNumbers.min()},max: ${formatedNumbers.max()},avg: ${formatedNumbers.average()}")
             formatedNumbers.clear()
         }
+
+
+        val bw = Files.newBufferedWriter(fich.toPath(),StandardOpenOption.APPEND)
+        bw.use {
+            addToBw.forEach {
+                bw.write(it)
+            }
+        }
+
     }
+
 
 }

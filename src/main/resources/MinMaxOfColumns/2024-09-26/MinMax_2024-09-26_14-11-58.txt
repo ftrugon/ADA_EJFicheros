@@ -1,0 +1,26 @@
+Final
+Min: 1.0165
+Max: 19705.0
+Average: 2796.7687572343007
+
+Maximo
+Min: 4.0675
+Max: 19875.0
+Average: 3170.1133571624755
+
+Minimo
+Min: 1.0165
+Max: 19675.0
+Average: 3136.510471657344
+
+Volumen
+Min: 1221.0
+Max: 3.6129692E7
+Average: 4252278.514285714
+
+Efectivo
+Min: 2343.09
+Max: 145765.44
+Average: 31767.77804129464
+
+[Nombre, Min, Max, Promedio]
